@@ -41,16 +41,16 @@ def create_chatgpt_config(
             message = message[:-1000]
             message += additional_message
             print("aha", num_tokens_from_messages(system_message + message, model))
-            config = {
-                "model": model,
-                "max_tokens": max_tokens,
-                "temperature": temperature,
-                "n": batch_size,
-                "messages": [
-                    {"role": "system", "content": system_message},
-                    {"role": "user", "content": message}
-                ],
-            }
+        config = {
+            "model": model,
+            "max_tokens": max_tokens,
+            "temperature": temperature,
+            "n": batch_size,
+            "messages": [
+                {"role": "system", "content": system_message},
+                {"role": "user", "content": message}
+            ],
+        }
     return config
 
 
