@@ -37,7 +37,7 @@ def create_chatgpt_config(
         }
     else:
         additional_message = message[-338:]
-        while num_tokens_from_messages(system_message + message, model) > 99500:
+        while num_tokens_from_messages(system_message + message, model) > 30000:
             message = message[:-1000]
             message += additional_message
             print("aha", num_tokens_from_messages(system_message + message, model))
