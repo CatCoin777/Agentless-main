@@ -58,7 +58,7 @@ def create_chatgpt_config(
             "max_tokens": max_tokens,
             "temperature": temperature,
             "n": batch_size,
-            "messages": [{"role": "system", "content": system_message}] + message,
+            "messages": [{"role": "system", "content": [{"type": "text", "text": system_message}]}] + message,
         }
     else:
         # 生成图像信息
