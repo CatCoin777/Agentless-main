@@ -374,7 +374,7 @@ def process_loc(loc, args, swe_bench_data, prev_o):
                 },
             }
         else:
-            greedy_traj = model.codegen(message, num_samples=1)[0]
+            greedy_traj = model.codegen(message, num_samples=1, instance_id=instance_id)[0]
     sample_responses.append(greedy_traj)
     # get temperature samples
     model = make_model(
@@ -403,7 +403,7 @@ def process_loc(loc, args, swe_bench_data, prev_o):
             sample_trajs = []
     else:
         if args.max_samples - 1:
-            sample_trajs = model.codegen(message, num_samples=args.max_samples - 1)
+            sample_trajs = model.codegen(message, num_samples=args.max_samples - 1, instance_id=instance_id)
         else:
             sample_trajs = []
 

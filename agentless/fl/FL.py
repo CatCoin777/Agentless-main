@@ -270,7 +270,7 @@ Return just the locations.
             temperature=0,
             batch_size=1,
         )
-        traj = model.codegen(message, num_samples=1)[0]
+        traj = model.codegen(message, num_samples=1, instance_id=self.instance_id)[0]
         traj["prompt"] = message
         raw_output = traj["response"]
         model_found_files = self._parse_model_return_lines(raw_output)
@@ -349,7 +349,7 @@ Return just the locations.
             temperature=0,
             batch_size=1,
         )
-        traj = model.codegen(message, num_samples=1)[0]
+        traj = model.codegen(message, num_samples=1, instance_id=self.instance_id)[0]
         traj["prompt"] = message
         raw_output = traj["response"]
 
@@ -423,7 +423,7 @@ Return just the locations.
             temperature=0,
             batch_size=1,
         )
-        traj = model.codegen(message, num_samples=1)[0]
+        traj = model.codegen(message, num_samples=1, instance_id=self.instance_id)[0]
         traj["prompt"] = message
         raw_output = traj["response"]
 
@@ -499,7 +499,7 @@ Return just the locations.
             temperature=temperature,
             batch_size=num_samples,
         )
-        raw_trajs = model.codegen(message, num_samples=num_samples)
+        raw_trajs = model.codegen(message, num_samples=num_samples, instance_id=self.instance_id)
 
         # Merge trajectories
         raw_outputs = [raw_traj["response"] for raw_traj in raw_trajs]

@@ -1,8 +1,11 @@
+import base64
+import json
 import time
 from typing import Dict, Union
 
 import openai
 import tiktoken
+from tqdm import tqdm
 
 
 def num_tokens_from_messages(message, model="gpt-3.5-turbo-0301"):
@@ -19,6 +22,27 @@ def num_tokens_from_messages(message, model="gpt-3.5-turbo-0301"):
     return num_tokens
 
 
+def encode_image(image_path):
+    with open(image_path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode('utf-8')
+
+
+def user_message_step(image_path):
+    cur_image = encode_image(image_path)
+    message = {
+        "role": "user",
+        "content": [
+            {
+                "type": "image_url",
+                "image_url": {
+                    "url": f"data:image/jpeg;base64,{cur_image}"
+                }
+            }
+        ]
+    }
+    return message
+
+
 def create_chatgpt_config(
         message: Union[str, list],
         max_tokens: int,
@@ -26,6 +50,7 @@ def create_chatgpt_config(
         batch_size: int = 1,
         system_message: str = "You are a helpful assistant.",
         model: str = "/gemini/platform/public/llm/huggingface/Qwen/Qwen2-VL-72B-Instruct",
+        instance_id: str = None,
 ) -> Dict:
     if isinstance(message, list):
         config = {
@@ -36,6 +61,21 @@ def create_chatgpt_config(
             "messages": [{"role": "system", "content": system_message}] + message,
         }
     else:
+        # 生成图像信息
+        with open("multi_data.json", "r") as f:
+            data_list = json.load(f)
+        img_message = []
+        for data in tqdm(data_list):
+            if instance_id == data["instance_id"]:
+                index = 0
+                for problem in data["problem_statement"]:
+                    if problem.startswith('http'):
+                        img_message += user_message_step(f"images/{instance_id}/图片{index}.png")
+                        index += 1
+                    else:
+                        continue
+
+        #
         additional_message = message[-338:]
         while num_tokens_from_messages(system_message + message, model) > 30000:
             message = message[:-1000]
@@ -47,9 +87,9 @@ def create_chatgpt_config(
             "temperature": temperature,
             "n": batch_size,
             "messages": [
-                {"role": "system", "content": system_message},
-                {"role": "user", "content": message}
-            ],
+                {"role": "system", "content": [{"type": "text", "text": system_message}]},
+                {"role": "user", "content": [{"type": "text", "text": message}]},
+            ]+img_message,
         }
     return config
 

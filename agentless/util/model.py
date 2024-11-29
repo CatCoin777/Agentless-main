@@ -39,12 +39,13 @@ class OpenAIChatDecoder(DecoderBase):
     def __init__(self, name: str, logger, **kwargs) -> None:
         super().__init__(name, logger, **kwargs)
 
-    def codegen(self, message: str, num_samples: int = 1) -> List[dict]:
+    def codegen(self, message: str, num_samples: int = 1, instance_id=None) -> List[dict]:
         if self.temperature == 0:
             assert num_samples == 1
         batch_size = min(self.batch_size, num_samples)
 
         config = create_chatgpt_config(
+            instance_id=instance_id,
             message=message,
             max_tokens=self.max_new_tokens,
             temperature=self.temperature,
