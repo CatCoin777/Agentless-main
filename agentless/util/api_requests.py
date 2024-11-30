@@ -62,7 +62,7 @@ def create_chatgpt_config(
         }
     else:
         # 生成图像信息
-        with open("multi_data.json", "r") as f:
+        with open("/gemini/platform/public/users/linhao/origin_data.json", "r") as f:
             data_list = json.load(f)
         img_message = []
         for data in tqdm(data_list):
