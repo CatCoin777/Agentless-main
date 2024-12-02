@@ -61,36 +61,52 @@ def create_chatgpt_config(
             "messages": [{"role": "system", "content": [{"type": "text", "text": system_message}]}] + message,
         }
     else:
-        # 生成图像信息
-        with open("/gemini/platform/public/users/linhao/origin_data.json", "r") as f:
-            data_list = json.load(f)
-        img_message = []
-        for data in tqdm(data_list):
-            if instance_id == data["instance_id"]:
-                index = 0
-                for problem in data["problem_statement"]:
-                    if problem.startswith('http'):
-                        img_message += user_message_step(f"images/{instance_id}/图片{index}.png")
-                        index += 1
-                    else:
-                        continue
-
-        #
-        additional_message = message[-338:]
-        while num_tokens_from_messages(system_message + message, model) > 30000:
-            message = message[:-1000]
-            message += additional_message
-            print("aha", num_tokens_from_messages(system_message + message, model))
-        config = {
-            "model": model,
-            "max_tokens": max_tokens,
-            "temperature": temperature,
-            "n": batch_size,
-            "messages": [
-                {"role": "system", "content": [{"type": "text", "text": system_message}]},
-                {"role": "user", "content": [{"type": "text", "text": message}]},
-            ]+img_message,
-        }
+        if model == "/gemini/platform/public/llm/huggingface/Qwen/Qwen2-VL-72B-Instruct":
+            # 生成图像信息
+            with open("/gemini/platform/public/users/linhao/origin_data.json", "r") as f:
+                data_list = json.load(f)
+            img_message = []
+            for data in tqdm(data_list):
+                if instance_id == data["instance_id"]:
+                    index = 0
+                    for problem in data["problem_statement"]:
+                        if problem.startswith('http'):
+                            img_message += user_message_step(f"images/{instance_id}/图片{index}.png")
+                            index += 1
+                        else:
+                            continue
+            #
+            additional_message = message[-338:]
+            while num_tokens_from_messages(system_message + message, model) > 30000:
+                message = message[:-1000]
+                message += additional_message
+                print("aha", num_tokens_from_messages(system_message + message, model))
+            config = {
+                "model": model,
+                "max_tokens": max_tokens,
+                "temperature": temperature,
+                "n": batch_size,
+                "messages": [
+                    {"role": "system", "content": [{"type": "text", "text": system_message}]},
+                    {"role": "user", "content": [{"type": "text", "text": message}]},
+                ]+img_message,
+            }
+        elif model == "/gemini/platform/public/llm/huggingface/Qwen/Qwen2.5-Coder-32B-Instruct":
+            additional_message = message[-338:]
+            while num_tokens_from_messages(system_message + message, model) > 99500:
+                message = message[:-1000]
+                message += additional_message
+                print("aha", num_tokens_from_messages(system_message + message, model))
+            config = {
+                "model": model,
+                "max_tokens": max_tokens,
+                "temperature": temperature,
+                "n": batch_size,
+                "messages": [
+                                {"role": "system", "content": [{"type": "text", "text": system_message}]},
+                                {"role": "user", "content": [{"type": "text", "text": message}]},
+                            ],
+            }
     return config
 
 

@@ -464,7 +464,7 @@ def repair(args):
         json.dump(vars(args), f, indent=4)
 
     # swe_bench_data = load_dataset("princeton-nlp/SWE-bench_Lite", split="test")
-    swe_bench_data = load_json(r"/gemini/platform/public/users/linhao/origin_data.json")
+    swe_bench_data = load_json(r"/gemini/platform/public/users/linhao/output.json")
     locs = load_jsonl(args.loc_file)
     prev_o = load_jsonl(args.output_file) if os.path.exists(args.output_file) else []
 
