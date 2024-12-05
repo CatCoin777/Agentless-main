@@ -660,6 +660,7 @@ def post_process_repair(args):
 
 def main():
     parser = argparse.ArgumentParser()
+    parser.add_argument("--input_data", type=str, default="data.json")
     parser.add_argument("--loc_file", type=str, required=True)
     parser.add_argument("--top_n", type=int, default=1)
     parser.add_argument("--loc_interval", action="store_true")
