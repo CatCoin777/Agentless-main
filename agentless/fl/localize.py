@@ -187,7 +187,8 @@ def localize_instance(
 
 def localize(args):
     # swe_bench_data = load_dataset("princeton-nlp/SWE-bench_Lite", split="test")
-    swe_bench_data = load_json(r"/gemini/platform/public/users/linhao/without_C.json")
+    input_data = args.input_data
+    swe_bench_data = load_json(rf"/gemini/platform/public/users/linhao/{input_data}")
     start_file_locs = load_jsonl(args.start_file) if args.start_file else None
     existing_instance_ids = (
         load_existing_instance_ids(args.output_file) if args.skip_existing else set()
@@ -283,6 +284,7 @@ def merge(args):
 def main():
     parser = argparse.ArgumentParser()
 
+    parser.add_argument("--input_data", type=str, default="data.json")
     parser.add_argument("--output_folder", type=str, required=True)
     parser.add_argument("--output_file", type=str, default="loc_outputs.jsonl")
     parser.add_argument(
