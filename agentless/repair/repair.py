@@ -683,7 +683,9 @@ def main():
         "--model",
         type=str,
         default="/gemini/platform/public/llm/huggingface/Qwen/Qwen2-VL-72B-Instruct",
-        choices=["/gemini/platform/public/llm/huggingface/Qwen/Qwen2-VL-72B-Instruct", "/gemini/platform/public/llm/huggingface/Qwen/Qwen2.5-Coder-32B-Instruct", "gpt-4o-mini-2024-07-18"],
+        choices=["/gemini/platform/public/llm/huggingface/Qwen/Qwen2-VL-72B-Instruct",
+                 "/gemini/platform/public/llm/huggingface/Qwen/Qwen2.5-Coder-32B-Instruct",
+                 "/gemini/platform/public/llm/huggingface/Qwen/Qwen2-VL-7B-Instruct"],
     )
     parser.add_argument(
         "--backend", type=str, default="openai", choices=["openai", "deepseek"]

@@ -61,7 +61,7 @@ def create_chatgpt_config(
             "messages": [{"role": "system", "content": [{"type": "text", "text": system_message}]}] + message,
         }
     else:
-        if model == "/gemini/platform/public/llm/huggingface/Qwen/Qwen2-VL-72B-Instruct":
+        if model == "/gemini/platform/public/llm/huggingface/Qwen/Qwen2-VL-72B-Instruct" or model == "/gemini/platform/public/llm/huggingface/Qwen/Qwen2-VL-7B-Instruct":
             # 生成图像信息
             with open(f"/gemini/platform/public/users/linhao/origin_data.json", "r") as f:
                 data_list = json.load(f)
