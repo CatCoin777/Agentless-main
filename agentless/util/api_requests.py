@@ -63,7 +63,7 @@ def create_chatgpt_config(
     else:
         if model == "/gemini/platform/public/llm/huggingface/Qwen/Qwen2-VL-72B-Instruct":
             # 生成图像信息
-            with open(f"/gemini/platform/public/users/linhao/without_C.json", "r") as f:
+            with open(f"/gemini/platform/public/users/linhao/origin_data.json", "r") as f:
                 data_list = json.load(f)
             img_message = []
             for data in tqdm(data_list):
